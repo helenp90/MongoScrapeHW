@@ -3,6 +3,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
+var axios = require ("axios");
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
@@ -11,7 +12,7 @@ var cheerio = require("cheerio");
 var db = require("./models");
 
 //=============================
-var PORT = 3008;
+var PORT = 3011;
 // Initialize Express
 var app = express();
 // Configure middleware
@@ -23,9 +24,8 @@ app.use(express.static("public"));
 
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost:27017/scrapedb", {
-  useMongoClient: true
-});
+mongoose.connect("mongodb://localhost/scrapedb", 
+);
 // Routes
 // A GET route for scraping the echojs website
 app.get("/scrape", function(req, res) {
@@ -44,7 +44,7 @@ app.get("/scrape", function(req, res) {
       result.link = $(this)
         .children("a")
         .attr("href");
-      // Create a new Article using the `result` object built from scraping
+      // Create a new Recipe using the `result` object built from scraping
       db.Recipe.create(result)
         .then(function(dbRecipe) {
           // View the added result in the console
