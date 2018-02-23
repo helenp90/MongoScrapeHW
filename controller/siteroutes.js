@@ -1,6 +1,7 @@
 var cheerio = require("cheerio");
 var express = require("express");
 var request = require ("request");
+var axios = require ("axios");
 
 var router = express.Router();
 
@@ -10,7 +11,7 @@ var db = require("../models");
 
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with request
-    axios.get("https://www.bonappetit.com/recipes").then(function(response) {
+    axios.get("https://www.bonappetit.com/ingredient/chicken").then(function(response) {
       // Then, we load that into cheerio and save it to $ for a shorthand selector
       var $ = cheerio.load(response.data);
       // Now, we grab every h2 within an article tag, and do the following:
@@ -61,6 +62,7 @@ app.get("/scrape", function(req, res) {
       .then(function(dbRecipe) {
         // If we were able to successfully find an Article with the given id, send it back to the client
         res.json(dbRecipe);
+        console.log ("scraping the articles")
       })
       .catch(function(err) {
         // If an error occurred, send it to the client
