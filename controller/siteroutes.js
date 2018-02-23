@@ -11,11 +11,11 @@ var db = require("../models");
 
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with request
-    axios.get("https://www.bonappetit.com/ingredient/chicken").then(function(response) {
+    axios.get("https://www.npr.org/").then(function(response) {
       // Then, we load that into cheerio and save it to $ for a shorthand selector
       var $ = cheerio.load(response.data);
       // Now, we grab every h2 within an article tag, and do the following:
-      $("article h2").each(function(i, element) {
+      $("story-text").each(function(i, element) {
         // Save an empty result object
         var result = {};
         // Add the text and href of every link, and save them as properties of the result object
